@@ -230,7 +230,13 @@ Oryx runs gunicorn against [wsgi.py](wsgi.py), which adds `src/` to
   So the stage forecast is a *rising-river* forecast: useful when the stage
   is moving, redundant when it is flat, and worse than assuming no change if
   you average over every hour of the year. The card says exactly that rather
-  than quoting only the flattering number. Minor and moderate exceedance have
+  than quoting only the flattering number.
+
+  Gating on the rising regime rather than the overall average is a deliberate
+  choice, and it is what admits the three stage heads — they lose on overall
+  MAE and win when the river moves. Both verdicts are recorded
+  (`beats_baseline`, `beats_baseline_overall`) so the trade-off stays visible,
+  and `tests/test_models.py` pins the gate to the rising regime. Minor and moderate exceedance have
   been crossed once since 2021 (Helene), giving a positive example in a
   single fold and an undefined AUC, so those heads stay unserved.
 

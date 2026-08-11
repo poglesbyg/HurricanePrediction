@@ -272,6 +272,12 @@ def train_with_backtest(frame, target_id: str, horizon_h: int,
     # gate uses -- with the overall figure kept alongside it, since a model
     # that wins on events and loses overall is a real trade-off a reader
     # deserves to see.
+    #
+    # This is a deliberate, reviewed choice, not an accident of tuning: it is
+    # what admits the three stage-regression heads, which lose on overall MAE
+    # and win on rising rows. Changing the gate back to `beats_baseline_overall`
+    # would withhold them again. Do not "simplify" the two verdicts into one
+    # without deciding which regime the dashboard is for.
     if kind == "regression" and oos_pred:
         event = _rising_regime_metrics(
             np.concatenate(oos_true), np.concatenate(oos_pred),
